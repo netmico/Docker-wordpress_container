@@ -4,30 +4,36 @@ services:
   wordpress:
     image: wordpress:latest
     container_name: wordpress
-    depends_on:
-      - db
     ports:
       - "8080:80"
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_NAME: wordpress_db
+      WORDPRESS_DB_USER: wordpress_user
+      WORDPRESS_DB_PASSWORD: password
     volumes:
-      - /mnt/c/Users/Mario_pc/Documents/GitHub/Docker-wordpress_container/volume:/var/www/html
+      - ./wordpress:/var/www/html
+      - ./config/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+    networks:
+      - wordpress-network
 
   db:
     image: mysql:5.7
     container_name: wordpress_db
-    restart: always
     environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
       MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wordpress_user
+      MYSQL_PASSWORD: password
     volumes:
-      - /mnt/c/Users/Mario_pc/Desktop/web_app_docker/volume/db:/var/lib/mysql
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress-network
+
+networks:
+  wordpress-network:
+    driver: bridge
 
 volumes:
-  wordpress_data:
   db_data:
+
