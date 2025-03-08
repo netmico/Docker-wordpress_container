@@ -1,0 +1,29 @@
+# Ignore Docker-related files and folders
+**/Dockerfile
+**/docker-compose.yml
+**/docker-compose.override.yml
+**/docker-compose.*.yml
+
+# Ignore the build directory and temporary files
+**/build/
+**/dist/
+**/node_modules/
+
+# Ignore Docker containers, volumes, and images
+**/.docker/
+**/.dockerignore
+.docker-compose.override.yml
+.docker/
+
+# Ignore any database data (in case it's in the repo)
+**/data/
+**/db/
+
+# Ignore environment variables
+**/.env
+
+# Ignore logs and temporary files
+**/*.log
+**/*.swp
+**/*.bak
+**/*.tmp
