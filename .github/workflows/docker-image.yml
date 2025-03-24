@@ -1,0 +1,26 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag wordpress:$(date +%s)
+
+    - name: Update docker-compose.yml with new image name
+      run: |
+        IMAGE_TAG=wordpress:$(date +%s)
+        sed -i "s|image: wordpress.*|image: $IMAGE_TAG|" docker-compose.yml
+
+    - name: Push the Docker image to the registry (optional)
+      run: |
+        docker tag wordpress:$(date +%s) your-registry/wordpress:latest
+        docker push your-registry/wordpress:latest
+
